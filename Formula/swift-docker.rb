@@ -1,13 +1,17 @@
 class SwiftDocker < Formula
   desc "Test your swift packages with one command `swift docker test`"
-  homepage ""
-  url "https://github.com/iainsmith/swift-docker/archive/0.1.1.tar.gz"
-  sha256 "9a982459ccd894490d676073a9908bfbad9d49008d565337cfe76cc925704402"
+  homepage "https://github.com/iainsmith/swift-docker"
+  url "https://github.com/iainsmith/swift-docker/archive/0.2.0.tar.gz"
+  sha256 "92ec0fe6944e8fc02dfe4efe2357c3b527325ca1f5eae28aeb9e170c044f25de"
   depends_on :xcode => :build
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release", "-Xswiftc",
-            "-static-stdlib"
+    if MacOS.version <= "10.14"
+      system "swift", "build", "--disable-sandbox", "--configuration", "release", "-Xswiftc",
+      "-static-stdlib"
+    else
+      system "swift", "build", "--disable-sandbox", "--configuration", "release"
+    end
     bin.install ".build/release/swift-docker"
   end
 
